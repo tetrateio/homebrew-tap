@@ -25,7 +25,11 @@ class Tetrate < Formula
   end
 
   def install
-    bin.install Dir["tetrate-*"].first => "tetrate"
+    # The download is the bare binary, and its mode depends on how Homebrew
+    # stages it. Make it executable before the completions run it.
+    binary = Dir["tetrate-*"].first
+    chmod 0755, binary
+    bin.install binary => "tetrate"
     generate_completions_from_executable(bin/"tetrate", "completion")
   end
 
